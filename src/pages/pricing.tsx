@@ -1,5 +1,5 @@
 // Uses the same styles as Product
-import styles from "./Product.module.css";
+import styles from "./product.module.css";
 
 export default function Pricing() {
   return (
@@ -17,7 +17,10 @@ export default function Pricing() {
             voluptatem iste.
           </p>
         </div>
-        <img src="/images/img-2.jpg" alt="overview of a large city with skyscrapers" />
+        <img
+          src="/images/img-2.jpg"
+          alt="overview of a large city with skyscrapers"
+        />
       </section>
     </main>
   );
