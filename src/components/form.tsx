@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import styles from "./Form.module.css";
+import styles from "./form.module.css";
 
 
 

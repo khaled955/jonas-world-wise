@@ -1,4 +1,4 @@
-import styles from "./Message.module.css";
+import styles from "./message.module.css";
 
 type MessageProps = {
   message: string;
