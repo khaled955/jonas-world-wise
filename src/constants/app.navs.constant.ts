@@ -1,5 +1,4 @@
 export const LINKS = [
- 
   {
     name: "pricing",
     path: "/pricing",
@@ -11,5 +10,16 @@ export const LINKS = [
   {
     name: "login",
     path: "/login",
+  },
+];
+
+export const APP_LINKS = [
+  {
+    name: "cities",
+    path: "/app/cities",
+  },
+  {
+    name: "countries",
+    path: "/app/countries",
   },
 ];

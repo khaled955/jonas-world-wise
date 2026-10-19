@@ -13,6 +13,4 @@ export type City = {
   position: Position;
 };
 
-export type CitiesResponse = {
-  cities: City[];
-};
+export type CitiesResponse = City[];
