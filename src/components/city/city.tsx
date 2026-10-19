@@ -1,6 +1,5 @@
-import { formatDate } from "../utils/formate-date";
-import styles from "./City.module.css";
-
+import { formatDate } from '../../utils/formate-date';
+import styles from './city.module.css'
 function City() {
   // TEMP DATA
   const currentCity = {

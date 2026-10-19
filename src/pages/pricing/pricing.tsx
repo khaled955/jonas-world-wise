@@ -1,6 +1,4 @@
-// Uses the same styles as Product
-import styles from "./product.module.css";
-
+import styles from "./pricing.module.css";
 export default function Pricing() {
   return (
     <main className={styles.product}>

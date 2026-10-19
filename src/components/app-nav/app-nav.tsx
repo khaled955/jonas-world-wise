@@ -1,7 +1,7 @@
 import { NavLink } from "react-router";
-import { LINKS } from "../constants/app.navs.constant";
-import styles from "./page-nav.module.css";
-import Logo from "./logo";
+import { LINKS } from "../../constants/app.navs.constant";
+import styles from "./app-nav.module.css";
+import Logo from "../logo/logo";
 function AppNav() {
   return (
     <nav className={styles.nav}>

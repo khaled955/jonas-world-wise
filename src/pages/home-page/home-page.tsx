@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import styles from "./home-page.module.css";
-import AppNav from "../components/app-nav";
+import AppNav from "../../components/app-nav/app-nav";
 
 export default function Homepage() {
   return (
