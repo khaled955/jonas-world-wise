@@ -10,6 +10,7 @@ import CityList from "./components/city-list/city-list";
 import { getCitiesApi } from "./services/api-cities";
 import { useEffect, useState } from "react";
 import { City } from "./types/city.type";
+import CountryList from "./components/country-list/country-list";
 
 export default function App() {
   // States
@@ -47,7 +48,7 @@ export default function App() {
                 <CityList cities={cities} isLoading={loading} error={error} />
               }
             />
-            <Route path="countries" element={<p>countries</p>} />
+            <Route path="countries" element={<CountryList cities={cities} isLoading={loading} error={error}/>} />
             <Route path="form" element={<Form />} />
           </Route>
           <Route path="/pricing" element={<Pricing />} />

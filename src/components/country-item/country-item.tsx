@@ -1,15 +1,14 @@
-import styles from './CountryItem.module.css'
+import { Country } from "../../types/city.type";
+import CountryFlag from "../country-flag/country-flag";
+import styles from "./country-item.module.css";
 type CountryItemProps = {
-  country: {
-    emoji: string;
-    country: string;
-  };
+  country: Country;
 };
 
 function CountryItem({ country }: CountryItemProps) {
   return (
     <li className={styles.countryItem}>
-      <span>{country.emoji}</span>
+      <CountryFlag emoji={country.emoji} country={country.country} />
       <span>{country.country}</span>
     </li>
   );
