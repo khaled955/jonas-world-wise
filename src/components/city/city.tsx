@@ -1,51 +1,90 @@
-import { formatDate } from '../../utils/formate-date';
-import styles from './city.module.css'
-function City() {
-  // TEMP DATA
-  const currentCity = {
-    cityName: "Lisbon",
-    emoji: "🇵🇹",
-    date: "2027-10-31T15:59:59.138Z",
-    notes: "My favorite city so far!",
-  };
+import { useParams} from "react-router";
+import { formatDate } from "../../utils/formate-date";
+import CountryFlag from "../country-flag/country-flag";
+import styles from "./city.module.css";
+import { useEffect, useState } from "react";
+import { City as cityType } from "../../types/city.type";
+import { getCityApi } from "../../services/api-cities";
+import Spinner from "../spinner/Spinner";
+import Message from "../message/message";
 
-  const { cityName, emoji, date, notes } = currentCity;
+type CityProps = {
+  onSetCurrentCity: (city: cityType) => void;
+  currentCity: cityType | null;
+};
+
+function City({ onSetCurrentCity, currentCity }: CityProps) {
+  // States
+  const { cityId } = useParams<{ cityId: string }>();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+
+  // Effects
+  useEffect(() => {
+    async function fetchCity() {
+      if (!cityId) return;
+
+      try {
+        setIsLoading(true);
+        setError(null);
+        const city = await getCityApi(cityId);
+        onSetCurrentCity(city);
+      } catch (error) {
+        setError(error as Error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchCity();
+  }, [cityId, onSetCurrentCity]);
+
+  if (!cityId) {
+    return <div>City ID is missing</div>;
+  }
+
+  if (isLoading) return <Spinner />;
+
+  if (error) return <Message message={error.message} />;
 
   return (
     <div className={styles.city}>
       <div className={styles.row}>
         <h6>City name</h6>
         <h3>
-          <span>{emoji}</span> {cityName}
+          {currentCity && (
+            <CountryFlag
+              emoji={currentCity.emoji}
+              country={currentCity.country}
+            />
+          )}
+          {currentCity?.cityName}
         </h3>
       </div>
 
       <div className={styles.row}>
-        <h6>You went to {cityName} on</h6>
-        <p>{formatDate(date || null)}</p>
+        <h6>You went to {currentCity?.cityName} on</h6>
+        <p>{formatDate(currentCity?.date || null)}</p>
       </div>
 
-      {notes && (
+      {currentCity?.notes && (
         <div className={styles.row}>
           <h6>Your notes</h6>
-          <p>{notes}</p>
+          <p>{currentCity?.notes}</p>
         </div>
       )}
 
       <div className={styles.row}>
         <h6>Learn more</h6>
         <a
-          href={`https://en.wikipedia.org/wiki/${cityName}`}
+          href={`https://en.wikipedia.org/wiki/${currentCity?.cityName}`}
           target="_blank"
           rel="noreferrer"
         >
-          Check out {cityName} on Wikipedia &rarr;
+          Check out {currentCity?.cityName} on Wikipedia &rarr;
         </a>
       </div>
 
-      <div>
-        {/* <BackButton /> */}
-      </div>
+      <div>{/* <BackButton /> */}</div>
     </div>
   );
 }

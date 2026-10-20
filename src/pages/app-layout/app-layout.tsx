@@ -1,11 +1,17 @@
 import Map from "../../components/map/map";
 import SideBar from "../../components/side-bar/side-bar";
+import { City } from "../../types/city.type";
 import styles from './app-layout.module.css'
-export default function AppLayout() {
+
+type AppLayoutProps = {
+  cities: City[];
+};
+
+export default function AppLayout({ cities }: AppLayoutProps) {
   return (
     <div className={styles.app}>
       <SideBar />
-      <Map/>
+      <Map cities={cities} />
     </div>
   );
 }

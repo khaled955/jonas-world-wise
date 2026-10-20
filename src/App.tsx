@@ -8,15 +8,22 @@ import AppLayout from "./pages/app-layout/app-layout";
 import Form from "./components/form/form";
 import CityList from "./components/city-list/city-list";
 import { getCitiesApi } from "./services/api-cities";
-import { useEffect, useState } from "react";
-import { City } from "./types/city.type";
+import { useCallback, useEffect, useState } from "react";
+import { City as cityType } from "./types/city.type";
 import CountryList from "./components/country-list/country-list";
+import City from "./components/city/city";
 
 export default function App() {
   // States
-  const [cities, setCities] = useState<City[]>([]);
+  const [cities, setCities] = useState<cityType[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
+  const [currentCity, setCurrentCity] = useState<cityType | null>(null);
+
+  // Handlers
+  const handleSetCurrentCity = useCallback((city: cityType) => {
+    setCurrentCity(city);
+  }, []);
 
   // Effects
   useEffect(() => {
@@ -40,15 +47,33 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route index element={<Homepage />} />
-          <Route path="/app" element={<AppLayout />}>
+          <Route path="/app" element={<AppLayout cities={cities} />}>
             <Route index element={<Navigate to="cities" replace />} />
             <Route
               path="cities"
               element={
-                <CityList cities={cities} isLoading={loading} error={error} />
+                <CityList currentCity={currentCity} cities={cities} isLoading={loading} error={error} />
               }
             />
-            <Route path="countries" element={<CountryList cities={cities} isLoading={loading} error={error}/>} />
+            <Route
+              path="cities/:cityId"
+              element={
+                <City
+                  onSetCurrentCity={handleSetCurrentCity}
+                  currentCity={currentCity}
+                />
+              }
+            />
+            <Route
+              path="countries"
+              element={
+                <CountryList
+                  cities={cities}
+                  isLoading={loading}
+                  error={error}
+                />
+              }
+            />
             <Route path="form" element={<Form />} />
           </Route>
           <Route path="/pricing" element={<Pricing />} />

@@ -3,14 +3,20 @@
 import { useState } from "react";
 
 import styles from "./form.module.css";
-
-
+import Button from "../button/button";
+import { useNavigate } from "react-router";
 
 function Form() {
+  // Navigation
+  const navigate = useNavigate();
   const [cityName, setCityName] = useState("");
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const [notes, setNotes] = useState("");
 
+  // Handlers
+  function handleBack() {
+    navigate(-1);
+  }
   return (
     <form className={styles.form}>
       <div className={styles.row}>
@@ -42,8 +48,13 @@ function Form() {
       </div>
 
       <div className={styles.buttons}>
-        <button>Add</button>
-        <button>&larr; Back</button>
+        <Button type="primary" htmlType="submit">
+          Add
+        </Button>
+
+        <Button onClick={handleBack} type="back">
+          &larr;Back
+        </Button>
       </div>
     </form>
   );
