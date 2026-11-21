@@ -18,6 +18,8 @@ function Form() {
 
   const [lat, lng] = useQueryUrl();
 
+  void loading;
+  void error;
   useEffect(() => {
     async function fetchLocation() {
       try {
