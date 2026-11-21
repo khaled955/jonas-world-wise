@@ -3,12 +3,14 @@ import { City } from "../../types/city.type";
 import { formatDate } from "../../utils/formate-date";
 import CountryFlag from "../country-flag/country-flag";
 import { Link } from "react-router";
+import { useCities } from "../../context/cities.context";
 
 type CityItemProps = {
   city: City;
-  currentCity: City | null;
 };
-export default function CityItem({ city, currentCity }: CityItemProps) {
+export default function CityItem({ city }: CityItemProps) {
+  // Hooks
+  const { currentCity } = useCities();
   return (
     <li>
       <Link

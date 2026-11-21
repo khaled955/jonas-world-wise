@@ -1,42 +1,24 @@
-import { useParams} from "react-router";
+import { useParams } from "react-router";
 import { formatDate } from "../../utils/formate-date";
 import CountryFlag from "../country-flag/country-flag";
 import styles from "./city.module.css";
-import { useEffect, useState } from "react";
-import { City as cityType } from "../../types/city.type";
-import { getCityApi } from "../../services/api-cities";
+import { useEffect } from "react";
 import Spinner from "../spinner/Spinner";
 import Message from "../message/message";
+import { useCities } from "../../context/cities.context";
+import BackButton from "../../ui/back-button";
 
-type CityProps = {
-  onSetCurrentCity: (city: cityType) => void;
-  currentCity: cityType | null;
-};
-
-function City({ onSetCurrentCity, currentCity }: CityProps) {
-  // States
+function City() {
+  // Hooks
   const { cityId } = useParams<{ cityId: string }>();
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
+  // States
+  const { currentCity, fetchCity, isLoading, error } = useCities();
 
   // Effects
   useEffect(() => {
-    async function fetchCity() {
-      if (!cityId) return;
-
-      try {
-        setIsLoading(true);
-        setError(null);
-        const city = await getCityApi(cityId);
-        onSetCurrentCity(city);
-      } catch (error) {
-        setError(error as Error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    fetchCity();
-  }, [cityId, onSetCurrentCity]);
+    if (!cityId) return;
+    fetchCity(cityId);
+  }, [cityId, fetchCity]);
 
   if (!cityId) {
     return <div>City ID is missing</div>;
@@ -84,7 +66,9 @@ function City({ onSetCurrentCity, currentCity }: CityProps) {
         </a>
       </div>
 
-      <div>{/* <BackButton /> */}</div>
+      <div>
+        <BackButton />
+      </div>
     </div>
   );
 }

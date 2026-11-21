@@ -1,22 +1,45 @@
 // "https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=0&longitude=0"
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import styles from "./form.module.css";
 import Button from "../button/button";
-import { useNavigate } from "react-router";
+import BackButton from "../../ui/back-button";
+import useQueryUrl from "../../hooks/use-query-url";
+import { fetchCityByCoordinates } from "../../services/api-cities";
 
 function Form() {
   // Navigation
-  const navigate = useNavigate();
   const [cityName, setCityName] = useState("");
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const [notes, setNotes] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
 
-  // Handlers
-  function handleBack() {
-    navigate(-1);
-  }
+  const [lat, lng] = useQueryUrl();
+
+  useEffect(() => {
+    async function fetchLocation() {
+      try {
+        setLoading(true);
+        setError(null);
+        const data = await fetchCityByCoordinates(lat, lng);
+        setCityName(
+          data.city ||
+            data.locality ||
+            data.principalSubdivision ||
+            "Unknown location",
+        );
+      } catch (error) {
+        setError(error as Error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchLocation();
+  }, [lat, lng]);
+
   return (
     <form className={styles.form}>
       <div className={styles.row}>
@@ -26,7 +49,6 @@ function Form() {
           onChange={(e) => setCityName(e.target.value)}
           value={cityName}
         />
-        {/* <span className={styles.flag}>{emoji}</span> */}
       </div>
 
       <div className={styles.row}>
@@ -52,9 +74,7 @@ function Form() {
           Add
         </Button>
 
-        <Button onClick={handleBack} type="back">
-          &larr;Back
-        </Button>
+        <BackButton />
       </div>
     </form>
   );
