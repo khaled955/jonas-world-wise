@@ -12,6 +12,7 @@ import { useCallback, useEffect, useState } from "react";
 import { City as cityType } from "./types/city.type";
 import CountryList from "./components/country-list/country-list";
 import City from "./components/city/city";
+import Providers from "./context";
 
 export default function App() {
   // States
@@ -44,44 +45,51 @@ export default function App() {
 
   return (
     <>
-      <BrowserRouter>
-        <Routes>
-          <Route index element={<Homepage />} />
-          <Route path="/app" element={<AppLayout cities={cities} />}>
-            <Route index element={<Navigate to="cities" replace />} />
-            <Route
-              path="cities"
-              element={
-                <CityList currentCity={currentCity} cities={cities} isLoading={loading} error={error} />
-              }
-            />
-            <Route
-              path="cities/:cityId"
-              element={
-                <City
-                  onSetCurrentCity={handleSetCurrentCity}
-                  currentCity={currentCity}
-                />
-              }
-            />
-            <Route
-              path="countries"
-              element={
-                <CountryList
-                  cities={cities}
-                  isLoading={loading}
-                  error={error}
-                />
-              }
-            />
-            <Route path="form" element={<Form />} />
-          </Route>
-          <Route path="/pricing" element={<Pricing />} />
-          <Route path="/product" element={<Product />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
+      <Providers>
+        <BrowserRouter>
+          <Routes>
+            <Route index element={<Homepage />} />
+            <Route path="/app" element={<AppLayout cities={cities} />}>
+              <Route index element={<Navigate to="cities" replace />} />
+              <Route
+                path="cities"
+                element={
+                  <CityList
+                    currentCity={currentCity}
+                    cities={cities}
+                    isLoading={loading}
+                    error={error}
+                  />
+                }
+              />
+              <Route
+                path="cities/:cityId"
+                element={
+                  <City
+                    onSetCurrentCity={handleSetCurrentCity}
+                    currentCity={currentCity}
+                  />
+                }
+              />
+              <Route
+                path="countries"
+                element={
+                  <CountryList
+                    cities={cities}
+                    isLoading={loading}
+                    error={error}
+                  />
+                }
+              />
+              <Route path="form" element={<Form />} />
+            </Route>
+            <Route path="/pricing" element={<Pricing />} />
+            <Route path="/product" element={<Product />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </Providers>
     </>
   );
 }
